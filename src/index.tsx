@@ -1,13 +1,21 @@
-import { Action, ActionPanel, List, Icon, Toast, showToast } from "@raycast/api";
+import { Action, ActionPanel, List, Icon, Toast, showToast, getPreferenceValues } from "@raycast/api";
 import { useState } from "react";
 import { useSearchWord } from "./hooks/searchWord";
 import { playSound } from "./playsound";
-import { setTimeout } from "timers/promises";
 import fetch from "node-fetch";
+import { HttpsProxyAgent } from "https-proxy-agent";
+
+interface Preferences {
+  key: string;
+  host: string;
+  proxy: string;
+}
 
 export default function Command() {
   const [input, setInput] = useState("");
   const { isLoading, result: items } = useSearchWord(input);
+
+  const preferences = getPreferenceValues<Preferences>();
 
   return (
     <List
@@ -40,8 +48,12 @@ export default function Command() {
                   });
 
                   try {
-                    await fetch(`http://localhost:3000/api/english/add?word=${item.entry}`, {
-                      headers: { Authorization: "aksdilwp@11OLM&123123JJYoK_#*q0192alkasidpqjkasdU^&^*#" },
+                    await fetch(`${preferences.host}/api/english/add?word=${item.entry}`, {
+                      headers: { Authorization: preferences.key },
+                      agent:
+                        preferences.proxy && preferences.proxy.length > 0
+                          ? new HttpsProxyAgent(preferences.proxy)
+                          : undefined,
                       method: "POST",
                     });
                     toast.style = Toast.Style.Success;
@@ -68,5 +80,6 @@ export default function Command() {
         />
       ))}
     </List>
+    // <Preferences/>
   );
 }

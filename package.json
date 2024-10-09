@@ -10,14 +10,43 @@
     {
       "name": "index",
       "title": "translate",
-      "description": "Template for showing a static list and a detail view",
+      "description": "translate for me",
       "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "host",
+      "description": "host for request",
+      "type": "textfield",
+      "required": true,
+      "title": "Host",
+      "placeholder": "Please input your host"
+    },
+    {
+      "name": "key",
+      "description": "A key for request",
+      "type": "password",
+      "required": true,
+      "title": "API KEY",
+      "placeholder": "Please input your api key"
+    },
+    {
+      "name": "proxy",
+      "description": "https proxy",
+      "type": "textfield",
+      "required": false,
+      "title": "https proxy",
+      "placeholder": "Please input your https proxy"
     }
   ],
   "dependencies": {
     "@raycast/api": "^1.69.0",
     "@raycast/utils": "^1.15.0",
-    "node-fetch": "^3.3.2"
+    "http-proxy-agent": "^7.0.2",
+    "https-proxy-agent": "^7.0.4",
+    "node-fetch": "^3.3.2",
+    "socks-proxy-agent": "^8.0.3"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^1.0.6",
